@@ -63,7 +63,7 @@ bun run verify       # Typecheck + lint + build
 ## Type Categories
 
 ### Enums
-- `LlmProvider` - 'openai' | 'gemini' | 'anthropic' | 'lm_studio'
+- `LlmProvider` - 'openai' | 'anthropic' | 'gemini' | 'mistral' | 'cohere' | 'groq' | 'xai' | 'deepseek' | 'perplexity' | 'lm_studio' | 'jev' | 'openrouter'
 - `HttpMethod` - 'GET' | 'POST'
 
 ### Entity Types (Database Models)
@@ -82,7 +82,7 @@ bun run verify       # Typecheck + lint + build
 - `AiExecutionRequest`
 
 ### Response Types
-- `AiExecutionResponse`, `AiPromptResponse`
+- `AiExecutionResponse`, `AiPromptResponse` (`prompt`, plus `request?: AiProviderRequest` when the caller passed `llm_provider`)
 - `AnalyticsResponse`
 - `RefreshApiKeyResponse`, `GetApiKeyResponse`
 - `HealthCheckData`

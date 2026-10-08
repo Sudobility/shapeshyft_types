@@ -35,6 +35,7 @@ import {
   type AiExecutionRequest,
   type AiExecutionResponse,
   type AiPromptResponse,
+  type AiProviderRequest,
   type PromptInput,
   type ApiHelperRequestInput,
   type ApiHelperRequestOutput,
@@ -931,6 +932,23 @@ describe('shapeshyft_types', () => {
       };
 
       expect(response.prompt).toContain('sentiment');
+    });
+
+    it('should create valid AiPromptResponse with a provider request', () => {
+      const request: AiProviderRequest = {
+        provider: 'openrouter',
+        model: 'openai/gpt-5.6-terra',
+        method: 'POST',
+        url: 'https://openrouter.ai/api/v1/chat/completions',
+        headers: { 'content-type': 'application/json' },
+        auth: { header: 'Authorization', prefix: 'Bearer ' },
+        body: { model: 'openai/gpt-5.6-terra', messages: [] },
+      };
+      const response: AiPromptResponse = { prompt: 'p', request };
+
+      expect(response.request?.auth.prefix).toBe('Bearer ');
+      expect(LLM_PROVIDERS).toContain('openrouter');
+      expect(isValidModelForProvider('openrouter', 'any/model-id')).toBe(true);
     });
 
     it('should create valid GetApiKeyResponse object', () => {
