@@ -5,7 +5,7 @@
     "": {
       "name": "@sudobility/shapeshyft_types",
       "dependencies": {
-        "@sudobility/shapeshyft_engine": "^1.0.10",
+        "@sudobility/shapeshyft_engine": "^1.0.11",
       },
       "devDependencies": {
         "@eslint/js": "^9.39.2",
@@ -154,7 +154,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.10", "", { "dependencies": { "@sudobility/types": "^1.9.68" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" }, "optionalPeers": ["@anthropic-ai/sdk", "@google/generative-ai", "groq-sdk", "openai", "sharp"] }, "sha512-eU63ujdNNzr2kA7aknp7tPtTyHl5GgwRz/PnYkJr6mhWH25Wr2+sctgEKEgOYHIX2R8q7lPMKEEdnEHwQoivUA=="],
+    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.11", "", { "dependencies": { "@sudobility/types": "^1.9.68" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" }, "optionalPeers": ["@anthropic-ai/sdk", "@google/generative-ai", "groq-sdk", "openai", "sharp"] }, "sha512-APBo9RfIxUPSI1c/E4rVWAzwMrKjt2tXiK1faOhfYf519cU3p7neKDY+ToM06+ezo0vMfzRoWlrNT660hxepbg=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.68", "", {}, "sha512-4LL5+UfcqQcc0PKKR/z/PqS6j9DQPVkkjL+3oOW+Bwx0TAu1SVKAlPhlt/9ruNMW+abcHuZoFvbOVD5gdYBSGw=="],
 
