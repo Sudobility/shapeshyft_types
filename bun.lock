@@ -6,7 +6,7 @@
       "name": "@sudobility/shapeshyft_types",
       "devDependencies": {
         "@eslint/js": "~9.39.5",
-        "@sudobility/shapeshyft_engine": "^1.0.13",
+        "@sudobility/shapeshyft_engine": "^1.0.14",
         "@sudobility/types": "^1.9.78",
         "@typescript-eslint/eslint-plugin": "~8.72.0",
         "@typescript-eslint/parser": "~8.72.0",
@@ -19,7 +19,7 @@
         "vitest": "~4.1.12",
       },
       "peerDependencies": {
-        "@sudobility/shapeshyft_engine": "^1.0.13",
+        "@sudobility/shapeshyft_engine": "^1.0.14",
         "@sudobility/types": "^1.9.78",
       },
     },
@@ -155,7 +155,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.13", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.13/b4c35f719de8742711ff25225297e5739a0e831d", { "dependencies": { "@sudobility/types": "^1.9.76" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-P3oJ7XfQzCJltBl7UVrNOCSzgoDVnSVs1q65JpG3OLjhScoKmMbtQ86m9jkwhdJ/uAFzgmk/tqy8DkZTSG3JAg=="],
+    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.14", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.14/01b781d717f6890e00a72d53df16fd101268d87c", { "dependencies": { "@sudobility/types": "^1.9.78" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-XdB9G0AvS2KT5uRkqaNcpDGmturKEYYEZXMUa3kgf4+VN9L57IteD6DSn6g51J+V1tBhQrqPjjCv7ayD5GNlqw=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.78", "https://npm.pkg.github.com/download/@sudobility/types/1.9.78/19ca0df5ad7d490bafc1b84384a8002f5dbc29ea", {}, "sha512-W6DYMUf7D0cVVUHDv5T8YZ339Wyay6xPx0CsdfNVgHDsm1ISDLhwacUwlM9xnvwXHGuAhP77wRVVo3uKGZe46Q=="],
 
