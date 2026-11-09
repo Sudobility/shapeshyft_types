@@ -3,225 +3,118 @@
 > **Git policy — never auto-commit or auto-push.** Leave your work in the working tree.
 > Run `git commit`, `git push`, `gh pr create`, or `scripts/push_all.sh` **only when the user
 > explicitly asks in that turn**. Approval for an earlier change does not carry forward, and
-> finishing a task is not permission to commit it.
+> finishing a task is not permission to commit it. Do not use feature branches — stay on the
+> current branch.
 
-TypeScript type definitions for ShapeShyft API - LLM structured output platform.
-
-**npm**: `@sudobility/shapeshyft_types` (public)
+Shared TypeScript type definitions for the ShapeShyft API (an LLM structured-output platform).
+npm name: `@sudobility/shapeshyft_types`.
 
 ## Tech Stack
 
-- **Language**: TypeScript
-- **Runtime**: Bun
-- **Package Manager**: Bun (do not use npm/yarn/pnpm for installing dependencies)
-- **Build**: TypeScript compiler (dual ESM/CJS)
+- **Language**: TypeScript (`~5.9`), ESM-only (`"type": "module"`)
+- **Package manager / runtime**: Bun — do NOT use npm/yarn/pnpm to install deps
+- **Build**: `tsc` → `dist/` (ESM `.js` + `.d.ts`). There is **no** CJS build.
 - **Test**: Vitest
+- **Lint/format**: ESLint + Prettier
 
-## Structure
+## Architecture
 
-`src/index.ts` re-exports `@sudobility/shapeshyft_engine/types` (the domain
-shared with ShapeRouter) and adds only ShapeShyft's own types: `LlmApiKey*`,
-`ProviderIpSync*`, `ClientIpDiagnostics`, and the `Endpoint*` types that bind an
-endpoint to an LLM key. To change a shared type (providers, models, pricing,
-projects, analytics, response helpers), change it in `shapeshyft_engine`.
+`src/index.ts` re-exports `@sudobility/shapeshyft_engine/types` with `export *`
+(types AND runtime values like `successResponse`, `PROVIDER_MODELS`), then adds
+ONLY ShapeShyft's own definitions:
+
+- `LlmApiKey` / `LlmApiKeySafe` + their create/update requests
+- `ProviderIpSync*` and `ClientIpDiagnostics`
+- `Endpoint` / `EndpointCreateRequest` / `EndpointUpdateRequest` — extend the
+  engine's `Endpoint*Base` and bind an endpoint to an `LlmApiKey` via `llm_key_id`
+
+To change a shared type (providers, models, pricing, projects, analytics,
+response helpers), change it in **`shapeshyft_engine`**, not here. The engine
+source is the sibling repo `../shapeshyft_engine`.
 
 `src/export-surface.test.ts` fails if any name exported before the engine
-extraction disappears. To intentionally remove an export, delete it from
-`tests/fixtures/export-surface.json` in the same change.
+extraction disappears (baseline: `tests/fixtures/export-surface.json`). To
+intentionally remove an export, delete it from that fixture in the same change.
+`scripts/list-exports.ts` prints an entry file's export names.
 
-## Project Structure
+## Layout
 
 ```
 src/
-├── index.ts                # Re-export of engine types + ShapeShyft-only types
-├── index.test.ts           # Type tests
-└── export-surface.test.ts  # Guards the public export list
-scripts/
-└── list-exports.ts         # Prints an entry file's export names
-tests/fixtures/
-└── export-surface.json     # Export names as of the engine extraction
-dist/
-├── index.js          # ESM build
-├── index.cjs         # CommonJS build
-└── index.d.ts        # Type declarations
+  index.ts                 # engine re-export + ShapeShyft-only types
+  index.test.ts            # type + runtime-helper tests
+  export-surface.test.ts   # guards the public export list
+scripts/list-exports.ts    # prints an entry file's export names
+tests/fixtures/export-surface.json  # export baseline
+dist/                      # build output: index.js, index.d.ts (+ .map); ESM only
 ```
 
-## Commands
+## Commands (verified)
 
 ```bash
-bun run build        # Build ESM + CJS
-bun run build:esm    # Build ESM only
-bun run build:cjs    # Build CJS only
-bun run clean        # Remove dist/
-bun run test         # Run Vitest
-bun run typecheck    # TypeScript check
-bun run lint         # Run ESLint
-bun run format       # Format with Prettier
-bun run verify       # Typecheck + lint + build
+bun install          # install deps (Bun only)
+bun run build        # tsc -p tsconfig.esm.json -> dist/ (ESM + declarations)
+bun run clean        # rm -rf dist
+bun run dev          # tsc --watch
+bun run typecheck    # tsc --noEmit
+bun run lint         # eslint src/   (lint:fix to autofix)
+bun run format       # prettier --write src/   (format:check to verify)
+bun run test:unit    # vitest run    (test:watch for watch mode)
+bun run verify       # typecheck -> lint -> build   (does NOT run tests)
 ```
 
-## Type Categories
+There is no `bun run test` script — use `test:unit`. There are no
+`build:esm` / `build:cjs` scripts.
 
-### Enums
-- `LlmProvider` - 'openai' | 'anthropic' | 'gemini' | 'mistral' | 'cohere' | 'groq' | 'xai' | 'deepseek' | 'perplexity' | 'lm_studio' | 'jev' | 'openrouter'
-- `HttpMethod` - 'GET' | 'POST'
+## Enums (from the engine)
 
-### Entity Types (Database Models)
-- `User` - User account
-- `LlmApiKey` / `LlmApiKeySafe` - LLM API keys (safe version excludes encrypted data)
-- `Project` - User projects
-- `Endpoint` - AI endpoint configurations
-- `UsageAnalytics` - Request tracking
-- `UserSettings` - User preferences
+- `LlmProvider`: `openai` | `anthropic` | `gemini` | `mistral` | `cohere` | `groq` | `xai` | `deepseek` | `perplexity` | `lm_studio` | `jev` | `openrouter`
+- `HttpMethod`: `GET` | `POST`
 
-### Request Types
-- `UserCreateRequest`, `UserUpdateRequest`
-- `LlmApiKeyCreateRequest`, `LlmApiKeyUpdateRequest`
-- `ProjectCreateRequest`, `ProjectUpdateRequest`
-- `EndpointCreateRequest`, `EndpointUpdateRequest`
-- `AiExecutionRequest`
+## Conventions & Gotchas
 
-### Response Types
-- `AiExecutionResponse`, `AiPromptResponse` (`prompt`, plus `request?: AiProviderRequest` when the caller passed `llm_provider`)
-- `AnalyticsResponse`
-- `RefreshApiKeyResponse`, `GetApiKeyResponse`
-- `HealthCheckData`
+- **`LlmApiKeySafe` vs `LlmApiKey`**: always use `LlmApiKeySafe` in API responses.
+  `LlmApiKey` carries `encrypted_api_key` / `encryption_iv` that must never reach a client.
+- **Re-exports are not duplicated**: `ApiResponse<T>`, `successResponse()`,
+  `errorResponse()`, cost helpers, `PROVIDER_MODELS`, etc. come from the engine
+  via `export *`. Do not redefine them here.
+- **Runtime values exist alongside types**: `successResponse()` / `errorResponse()`
+  and the cost/model helpers are real functions re-exported from the engine, not type-only.
+- **ESM-only**: `package.json` `exports` has only `import` + `types`. If a
+  consumer needs CJS, that is a deliberate change, not the current state.
+- **Peer deps**: both `@sudobility/shapeshyft_engine` and `@sudobility/types`
+  are peers and must be present at consume time.
 
-### Query Parameter Types
-- `ProjectQueryParams`
-- `EndpointQueryParams`
-- `UsageAnalyticsQueryParams`
+## Publishing & Downstream Impact
 
-### Utility Types
-- `JsonSchema` - JSON Schema definition
-- `ApiResponse<T>` - Standard API response wrapper (re-exported)
-- `PaginatedResponse<T>` - Paginated list response (re-exported)
+CI (`.github/workflows/ci-cd.yml`, reusable `johnqh/workflows` with
+`publish-target: github`) auto-publishes to **GitHub Packages** on push to
+`main`/`develop`. Bump the version in `package.json` as part of the change.
+`prepublishOnly` runs `clean` + `verify`.
 
-### Response Helpers
-```typescript
-import { successResponse, errorResponse } from '@sudobility/shapeshyft_types';
+This is the **base types package** for the ShapeShyft chain, so changes cascade:
 
-// Create success response
-const response = successResponse({ id: '123', name: 'Test' });
-// { success: true, data: { id: '123', name: 'Test' }, timestamp: '...' }
-
-// Create error response
-const error = errorResponse('Something went wrong');
-// { success: false, error: 'Something went wrong', timestamp: '...' }
+```
+shapeshyft_engine/types  ->  shapeshyft_types (this)  ->  shapeshyft_client
+                                                       ->  shapeshyft_api
+                                      client -> shapeshyft_lib -> shapeshyft_app
 ```
 
-## Usage
+**Be extremely careful with breaking changes.** Renaming/removing a type or
+field breaks multiple downstream projects. Prefer additive changes (new optional
+fields, new types). After a change: `bun run verify` + `bun run test:unit` here,
+publish, then rebuild consumers in dependency order.
 
-```typescript
-import type {
-  User,
-  Project,
-  Endpoint,
-  LlmProvider,
-  AiExecutionRequest,
-  AiExecutionResponse,
-} from '@sudobility/shapeshyft_types';
-
-import { successResponse, errorResponse } from '@sudobility/shapeshyft_types';
-```
-
-## Peer Dependencies
-
-- `@sudobility/types` - Common Sudobility types (re-exported)
-
-## Publishing
+## Local Dev Workflow (linking)
 
 ```bash
-bun run verify          # All checks
-npm publish             # Publish to npm (public)
-```
-
-## Dual Build
-
-Supports both ESM and CommonJS:
-
-```json
-{
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts"
-}
-```
-
-## Package Hierarchy
-
-This is the base types package used by all other ShapeShyft packages:
-
-```
-shapeshyft_engine/types (shared domain, also used by shaperouter_types)
-    ↑
-shapeshyft_types (this package)
-    ↑
-shapeshyft_client (API hooks)
-    ↑
-shapeshyft_lib (business logic)
-    ↑
-shapeshyft_app (frontend)
-shapeshyft_api (backend)
+bun link                                          # in this project
+cd ../shapeshyft_client && bun link @sudobility/shapeshyft_types
+# rebuild here after edits, then rebuild consumers in order
+# when done: bun unlink @sudobility/shapeshyft_types && bun install
 ```
 
 ## Workspace Context
 
-This project is part of the **ShapeShyft** multi-project workspace at the parent directory. See `../CLAUDE.md` for the full architecture, dependency graph, and build order.
-
-## Downstream Impact
-
-This is the **most impactful package** in the ShapeShyft dependency chain. Changes cascade widely.
-
-| Downstream Consumer | Relationship |
-|---------------------|-------------|
-| `shapeshyft_client` | Direct dependency |
-| `shapeshyft_lib` | Transitive via shapeshyft_client |
-| `shapeshyft_app` | Transitive + direct dependency |
-| `shapeshyft_api` | Direct dependency |
-
-After making changes:
-1. `bun run verify` in this project
-2. `npm publish`
-3. Update in dependency order: `shapeshyft_client` -> `shapeshyft_lib` -> `shapeshyft_app`, and `shapeshyft_api`
-
-**Be extremely careful with breaking changes.** Renaming or removing a type/field breaks multiple projects. Prefer additive changes (new optional fields, new types).
-
-## Local Dev Workflow
-
-```bash
-# In this project:
-bun link
-
-# In each consuming project:
-cd ../shapeshyft_client && bun link @sudobility/shapeshyft_types
-cd ../shapeshyft_api && bun link @sudobility/shapeshyft_types
-
-# Rebuild after changes:
-bun run build
-
-# Then rebuild consumers in order:
-cd ../shapeshyft_client && bun run build
-cd ../shapeshyft_lib && bun run build
-
-# When done, unlink in each consumer:
-bun unlink @sudobility/shapeshyft_types && bun install
-```
-
-## Pre-Commit Checklist
-
-```bash
-bun run verify    # Runs: typecheck -> lint -> build (does NOT include tests)
-bun run test      # Run tests separately
-```
-
-## Gotchas
-
-- **Dual ESM/CJS build** -- produces both `.js` (ESM) and `.cjs` (CJS) via two tsconfig files. The CJS build uses a rename step that copies from `dist-cjs/` to `dist/`.
-- **Re-exports from `@sudobility/types`** -- `ApiResponse<T>`, `successResponse()`, `errorResponse()` are re-exported. Do not duplicate these.
-- **Response helpers are runtime values, not just types** -- `successResponse()` and `errorResponse()` are actual functions.
-- **`LlmApiKeySafe` vs `LlmApiKey`** -- always use `LlmApiKeySafe` in API responses. `LlmApiKey` includes encrypted data that must not be sent to clients.
-
-## Git Workflow
-
-- Do not use feature branches for code changes. Always stay on the current branch.
+Part of the ShapeShyft multi-project workspace in the parent directory. See
+`../CLAUDE.md` for the full architecture, dependency graph, and build order.
