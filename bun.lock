@@ -6,7 +6,7 @@
       "name": "@sudobility/shapeshyft_types",
       "devDependencies": {
         "@eslint/js": "~9.39.5",
-        "@sudobility/shapeshyft_engine": "^1.0.17",
+        "@sudobility/shapeshyft_engine": "^1.0.18",
         "@sudobility/types": "^1.11.1",
         "@typescript-eslint/eslint-plugin": "~8.72.0",
         "@typescript-eslint/parser": "~8.72.0",
@@ -19,7 +19,7 @@
         "vitest": "~4.1.12",
       },
       "peerDependencies": {
-        "@sudobility/shapeshyft_engine": "^1.0.17",
+        "@sudobility/shapeshyft_engine": "^1.0.18",
         "@sudobility/types": "^1.11.1",
       },
     },
@@ -155,7 +155,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.17", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.17/6fde69b8d17c7269902ee30e06ed724d183759f4", { "dependencies": { "@sudobility/types": "^1.10.2" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-urauN9GoI9hBbgisF2zd63Ih6Gs26IwoyCKTDLEn/gzV+Y8lnC58HxQJSPBjNht8Vwe/pcqIvgO4J5n4LqNm8A=="],
+    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.18", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.18/1943ff4f78b0dd81659860dc93329479c87b8a03", { "dependencies": { "@sudobility/types": "^1.11.1" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-mXv0kfZugVPH56g8i3f97DYzBXocXrCK23zTMjdaarTvfFsyR7yqGwLc8AmQ5WDsWMEGy/L0KPDsTfjKOeEHNg=="],
 
     "@sudobility/types": ["@sudobility/types@1.11.1", "https://npm.pkg.github.com/download/@sudobility/types/1.11.1/dc6bf578b6f618fab74a7a60ed064d80b18782c2", {}, "sha512-NPECPlRPj1IavT7pu3KtIFB6rDfs30AgD89pw/qrNe1+Tm0FFLkIfqxE/y8+uajm85um+FcoYHn/hY70Px9uow=="],
 
