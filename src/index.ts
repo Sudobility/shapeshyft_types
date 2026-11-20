@@ -93,6 +93,83 @@ export interface LlmApiKeyUpdateRequest {
 }
 
 // =============================================================================
+// Site-wide LLM API Keys (ShapeShyft: platform credentials, not entity-owned)
+// =============================================================================
+
+/**
+ * @description Full site-wide LLM API key record including encrypted credentials.
+ * Site-wide keys are platform-level provider credentials managed by site admins and
+ * are NOT owned by any entity. At invocation an active site-wide key for a provider
+ * is used as a fallback when an entity has not supplied its own key for that
+ * provider. Contains sensitive
+ * data (encrypted_api_key, encryption_iv) that must never be sent to clients -- use
+ * {@link SiteLlmApiKeySafe} for API responses instead.
+ */
+export interface SiteLlmApiKey {
+  /** Unique identifier for this API key record */
+  uuid: string;
+  /** Human-readable label for this key (e.g., "Platform OpenAI Key") */
+  key_name: string;
+  /** LLM provider this key authenticates against */
+  provider: LlmProvider;
+  /** AES-256-CBC encrypted API key -- null if no key has been set (e.g., local LM Studio) */
+  encrypted_api_key: string | null;
+  /** Custom endpoint URL for self-hosted or proxy providers (e.g., LM Studio base URL) */
+  endpoint_url: string | null;
+  /** Initialization vector used for AES decryption of encrypted_api_key */
+  encryption_iv: string | null;
+  /** Whether this key is enabled for use; null treated as true */
+  is_active: boolean | null;
+  /** Firebase UID of the site admin who created this key */
+  created_by: string | null;
+  /** Timestamp when this key record was created */
+  created_at: Date | null;
+  /** Timestamp of the most recent update to this key */
+  updated_at: Date | null;
+}
+
+/**
+ * @description Safe version of {@link SiteLlmApiKey} without sensitive data.
+ * Use this type in all API responses to avoid leaking encrypted credentials.
+ * The `has_api_key` boolean indicates whether a key is configured without exposing it.
+ */
+export interface SiteLlmApiKeySafe {
+  /** Unique identifier for this API key record */
+  uuid: string;
+  /** Human-readable label for this key */
+  key_name: string;
+  /** LLM provider this key authenticates against */
+  provider: LlmProvider;
+  /** Whether an API key value has been set (true) or is empty (false) */
+  has_api_key: boolean;
+  /** Custom endpoint URL for self-hosted or proxy providers */
+  endpoint_url: string | null;
+  /** Whether this key is enabled for use; null treated as true */
+  is_active: boolean | null;
+  /** Firebase UID of the site admin who created this key */
+  created_by: string | null;
+  /** Timestamp when this key record was created */
+  created_at: Date | null;
+  /** Timestamp of the most recent update to this key */
+  updated_at: Date | null;
+}
+
+// Site-wide LLM API Key requests
+export interface SiteLlmApiKeyCreateRequest {
+  key_name: string;
+  provider: LlmProvider;
+  api_key: Optional<string>;
+  endpoint_url: Optional<string>;
+}
+
+export interface SiteLlmApiKeyUpdateRequest {
+  key_name: Optional<string>;
+  api_key: Optional<string>;
+  endpoint_url: Optional<string>;
+  is_active: Optional<boolean>;
+}
+
+// =============================================================================
 // Provider IP Sync Types
 // =============================================================================
 
@@ -159,6 +236,10 @@ export interface ProviderIpSyncResponse {
 // LLM API key response aliases
 export type LlmApiKeyListResponse = BaseResponse<LlmApiKeySafe[]>;
 export type LlmApiKeyResponse = BaseResponse<LlmApiKeySafe>;
+
+// Site-wide LLM API key response aliases
+export type SiteLlmApiKeyListResponse = BaseResponse<SiteLlmApiKeySafe[]>;
+export type SiteLlmApiKeyResponse = BaseResponse<SiteLlmApiKeySafe>;
 
 // =============================================================================
 // Endpoint binding (ShapeShyft: an endpoint points at one LlmApiKey)
