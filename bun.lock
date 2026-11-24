@@ -6,7 +6,7 @@
       "name": "@sudobility/shapeshyft_types",
       "devDependencies": {
         "@eslint/js": "~9.39.5",
-        "@sudobility/shapeshyft_engine": "^1.0.20",
+        "@sudobility/shapeshyft_engine": "^1.0.21",
         "@sudobility/types": "^1.11.2",
         "@typescript-eslint/eslint-plugin": "~8.72.0",
         "@typescript-eslint/parser": "~8.72.0",
@@ -19,7 +19,7 @@
         "vitest": "~4.1.12",
       },
       "peerDependencies": {
-        "@sudobility/shapeshyft_engine": "^1.0.20",
+        "@sudobility/shapeshyft_engine": "^1.0.21",
         "@sudobility/types": "^1.11.2",
       },
     },
@@ -155,7 +155,7 @@
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
-    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.20", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.20/a03dae8d2297b5cd222f07eb960163ef618fc9de", { "dependencies": { "@sudobility/types": "^1.11.2" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-KitUdA40zenc/CqvqaXLJZDKIZDOqw2bQ8fxYkPlg1F+SD+8s3T2HEhzknacm+jAmyFjzpB+7FywMIl52G37uA=="],
+    "@sudobility/shapeshyft_engine": ["@sudobility/shapeshyft_engine@1.0.21", "https://npm.pkg.github.com/download/@sudobility/shapeshyft_engine/1.0.21/8cd0a5d9e3e30397f7a83a439113e702242d4372", { "dependencies": { "@sudobility/types": "^1.11.2" }, "peerDependencies": { "@anthropic-ai/sdk": "^0.39.0", "@google/generative-ai": "^0.21.0", "groq-sdk": "^0.37.0", "openai": "^4.77.0", "sharp": "^0.35.4" } }, "sha512-0C6/CxSg21S23ll98ZcwHXW6yqR9887nHrZNQ2r0ex7nO7x6zK1a3wgfIc0zvHTOj+jOywNoUOw0K8mLQtItAQ=="],
 
     "@sudobility/types": ["@sudobility/types@1.11.2", "https://npm.pkg.github.com/download/@sudobility/types/1.11.2/d6d0b1809eaca31ef737646032cc431111b58a49", {}, "sha512-gg+bPtcOGNETDt9oNdjcn7R22EfFWmRxMOhj0ADwulBJ9tJ4NaMaXkrTtkWF+figSDZqmD9a9kodgOHseq8gsQ=="],
 
